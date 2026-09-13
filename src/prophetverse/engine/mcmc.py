@@ -66,7 +66,7 @@ class MCMCInferenceEngine(BaseInferenceEngine):
         num_warmup=200,
         num_chains=1,
         dense_mass: Union[bool, List[Tuple[str, ...]]] = False,
-        rng_key: PRNGKey = None,
+        rng_key: Union[PRNGKey, None] = None,
         r_hat: Union[float, None] = None,
         progress_bar: bool = True,
     ):
@@ -146,7 +146,7 @@ class MCMCInferenceEngine(BaseInferenceEngine):
                 summary_ = {}
 
             flattened_samples = {
-                k: v.reshape((-1,) + v.shape[2:]) for k, v in samples.items()
+                k: v.reshape((-1,) + v.shape[2:]) for k, v in samples.items() if v.size > 0
             }
 
             return flattened_samples, summary_
